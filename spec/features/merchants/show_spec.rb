@@ -155,18 +155,19 @@ RSpec.describe("the merchant dashboard") do
         expect(page).to_not have_content("#{customer5.first_name} #{customer5.last_name} - 1 purchases")
         expect(page).to_not have_content("#{customer7.first_name} #{customer7.last_name} - 1 purchases")
       end
-    end
+    
 
-    describe 'Then I see a link to view all my discounts' do
-      it 'When I click this link I am taken to my bulk discounts index page' do
-        merchant1 = Merchant.create!(name: "Bob")
-        
-        visit merchant_dashboard_path(merchant1)
-      
-        expect(page).to have_content("View All My Discounts")
-        expect(page).to have_link("Discounts")
-        click_link("Discounts")
-        expect(current_path).to eq(merchant_bulk_discounts_path(merchant1))
+      describe 'Then I see a link to view all my discounts' do
+        it 'When I click this link I am taken to my bulk discounts index page' do
+          merchant1 = Merchant.create!(name: "Bob")
+          
+          visit merchant_dashboard_path(merchant1)
+
+          expect(page).to have_content("View All My Discounts")
+          expect(page).to have_link("Discounts")
+          click_link("Discounts")
+          expect(current_path).to eq(merchant_bulk_discounts_path(merchant1))
+        end
       end
     end
   end

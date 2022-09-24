@@ -25,16 +25,6 @@ RSpec.describe 'As a merchant, when I visit the Bulk Discounts Index page' do
         end
     end
 
-    # Merchant Bulk Discount Create
-
-    # As a merchant
-    # When I visit my bulk discounts index
-    # Then I see a link to create a new discount
-    # When I click this link
-    # Then I am taken to a new page where I see a form to add a new bulk discount
-    # When I fill in the form with valid data
-    # Then I am redirected back to the bulk discount index
-    # And I see my new bulk discount listed
     describe 'Then I see a link to create a new discount' do
         describe 'When I click this link' do
             it' I am taken to a new page where I see a form to add a new bulk discount' do
@@ -46,7 +36,7 @@ RSpec.describe 'As a merchant, when I visit the Bulk Discounts Index page' do
 
                 expect(page).to have_link("Create a New Discount")
                 click_link("Create a New Discount")
-                expect(current_path).to eq(new_merchant_bulk_discount(merchant1))
+                expect(current_path).to eq(new_merchant_bulk_discount_path(merchant1))
             end
         end
 
@@ -60,6 +50,7 @@ RSpec.describe 'As a merchant, when I visit the Bulk Discounts Index page' do
                     visit merchant_bulk_discounts_path(merchant1)
 
                     click_link("Create a New Discount")
+                    expect(current_path).to eq(new_merchant_bulk_discount_path(merchant1))
 
                     fill_in("Discount:", with: "15")
                     fill_in("Quantity Threshold:", with: "10")

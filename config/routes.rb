@@ -16,7 +16,8 @@ Rails.application.routes.draw do
     get("/dashboard",     to: "merchants#show")
     resources(:invoices,     only: [:index, :show, :update])
     resources(:items,     only: [:index, :show, :new, :edit, :create, :update])
-    resources(:bulk_discounts, only: [:index, :show, :new, :create, :destroy])
+    resources(:bulk_discounts, only: [:index, :show, :new, :create, :destroy, :edit, :update])
+    patch '/bulk_discounts', to: 'bulk_discounts#update'
   end
 
   get("/merchants/:id/items/:id",   to: "items#show")

@@ -75,8 +75,15 @@ RSpec.describe 'As a merchant, when I visit the Bulk Discounts Index page' do
                 
                 visit merchant_bulk_discounts_path(merchant1)
 
-                expect(page).to have_link("Delete Discount")
-                click_link("Delete Discount")
+                within("#discount-#{bulk_discount1.id}") do
+                    expect(page).to have_link("Delete Discount")
+                    click_link("Delete Discount")
+                end
+        
+                within("#discount-#{bulk_discount2.id}") do
+                    expect(page).to have_link("Delete Discount")
+                    click_link("Delete Discount")
+                end
 
                 expect(current_path).to eq(merchant_bulk_discounts_path(merchant1))
 

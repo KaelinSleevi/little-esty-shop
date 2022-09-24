@@ -5,6 +5,7 @@
         <ul>
             <li>Discount: <%= "#{bulk_discount.percentage_discount}%" %></li>
             <li>Quantity Threshold: <%= bulk_discount.quantity_threshold %></li>
+            <%= link_to "See This Discount", merchant_bulk_discount_path(@merchant, bulk_discount)%>
         </ul>
     </div>
 <% end %>

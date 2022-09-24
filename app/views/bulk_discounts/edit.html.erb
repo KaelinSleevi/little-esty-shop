@@ -1,6 +1,6 @@
 <h1>Create a new discount:</h1>
 
-<%= form_with url: merchant_bulk_discounts_path(@merchant), local: true do |f| %>
+<%= form_with url: merchant_bulk_discount_path(@merchant, @bulk_discount), method: :patch, local: true do |f| %>
     <p><%= f.label :percentage_discount, "Discount: "%></p>
     <%= f.number_field :percentage_discount, value: @bulk_discount.percentage_discount %>
     <p><%= f.label :quantity_threshold, "Quantity Threshold: "%></p>

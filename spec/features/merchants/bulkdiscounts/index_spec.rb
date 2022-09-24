@@ -48,7 +48,7 @@ RSpec.describe 'As a merchant, when I visit the Bulk Discounts Index page' do
                     bulk_discount2 = merchant1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)
                 
                     visit merchant_bulk_discounts_path(merchant1)
-
+                    
                     click_link("Create a New Discount")
                     expect(current_path).to eq(new_merchant_bulk_discount_path(merchant1))
 
@@ -63,32 +63,33 @@ RSpec.describe 'As a merchant, when I visit the Bulk Discounts Index page' do
                 end
             end
         end
-    end
+
  
 
-    describe 'Then next to each bulk discount I see a link to delete it' do
-        describe 'When I click this link' do
-            it 'Then I am redirected back to the bulk discounts index page and I no longer see the discount listed' do
-                merchant1 = Merchant.create!(name: "Bob")
-                bulk_discount1 = merchant1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)
-                bulk_discount2 = merchant1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)
-                
-                visit merchant_bulk_discounts_path(merchant1)
+        describe 'Then next to each bulk discount I see a link to delete it' do
+            describe 'When I click this link' do
+                it 'Then I am redirected back to the bulk discounts index page and I no longer see the discount listed' do
+                    merchant1 = Merchant.create!(name: "Bob")
+                    bulk_discount1 = merchant1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)
+                    bulk_discount2 = merchant1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)
+                    
+                    visit merchant_bulk_discounts_path(merchant1)
+                    
+                    within("#discount-#{bulk_discount1.id}") do
+                        expect(page).to have_link("Delete Discount")
+                        click_link("Delete Discount")
+                    end
+            
+                    within("#discount-#{bulk_discount2.id}") do
+                        expect(page).to have_link("Delete Discount")
+                        click_link("Delete Discount")
+                    end
+                    
+                    expect(current_path).to eq(merchant_bulk_discounts_path(merchant1))
 
-                within("#discount-#{bulk_discount1.id}") do
-                    expect(page).to have_link("Delete Discount")
-                    click_link("Delete Discount")
+                    expect(page).to_not have_content("Discount: 15%")
+                    expect(page).to_not have_content("Quantity Threshold: 10")
                 end
-        
-                within("#discount-#{bulk_discount2.id}") do
-                    expect(page).to have_link("Delete Discount")
-                    click_link("Delete Discount")
-                end
-
-                expect(current_path).to eq(merchant_bulk_discounts_path(merchant1))
-
-                expect(page).to_not have_content("Discount: 15%")
-                expect(page).to_not have_content("Quantity Threshold: 10")
             end
         end
     end

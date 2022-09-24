@@ -6,7 +6,7 @@ RSpec.describe 'As a merchant, when I visit my bulk discount show page' do
         bulk_discount1 = merchant1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)
         bulk_discount2 = merchant1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)
 
-        visit merchant_bulk_discount_path(merchant1)
+        visit merchant_bulk_discount_path(merchant1, bulk_discount1)
 
         expect(page).to have_content("#{bulk_discount1.id} Bulk Discounts")
         

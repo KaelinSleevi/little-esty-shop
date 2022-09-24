@@ -1,0 +1,8 @@
+<h1><%= @bulk_discount.id %> Bulk Discounts</h1>
+
+<div id="discount-<%=@bulk_discount.id%>">
+    <ul>
+        <li>Discount: <%= "#{@bulk_discount.percentage_discount}%" %></li>
+        <li>Quantity Threshold: <%= @bulk_discount.quantity_threshold %></li>
+    </ul>
+</div>

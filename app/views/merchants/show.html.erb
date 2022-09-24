@@ -15,9 +15,11 @@
 <%end %>
 
 <h3>Favorite Customers</h3>
-<% @merchant.favorite_customers.each do |favorite_customer| %>
+<p><% @merchant.favorite_customers.each do |favorite_customer| %>
     <li><%= favorite_customer.first_name %> <%= favorite_customer.last_name %> - <%= favorite_customer.transaction_count %> purchases</li>
-<% end %>
+<% end %></p>
 
+<h3>View All My Discounts</h3>
+<p><%= link_to "Discounts", merchant_bulk_discounts_path(@merchant.id)%></p>
 
 

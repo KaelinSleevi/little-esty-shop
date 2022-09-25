@@ -28,4 +28,5 @@
 <% end %>
 
 
-<h3>Total Revenue for Invoice <%= "#{@invoice.id}" %>: $<%= "#{(@invoice.total_revenue.to_f)/ 100.round(2)}" %></h3>
+<h4>Total Revenue for Invoice <%= "#{@invoice.id}" %>: $<%= "#{(@invoice.total_revenue.to_f)/ 100.round(2)}" %></h4>
+<h4>Total Discounted Revenue for Invoice <%= "#{@invoice.id}" %>: $<%= "#{(@invoice.discount.to_f)/ 100.round(2)}" %></h4>

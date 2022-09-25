@@ -150,8 +150,8 @@ RSpec.describe(Invoice, type: :model) do
         bulk_discount1 = merchant_1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)
         bulk_discount2 = merchant_1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)
 
-        expect(invoice_2.find_discount).to eq(bulk_discount2)
-        expect(invoice_3.find_discount).to eq(bulk_discount1)
+        expect(invoice_2.find_discount).to eq([invoice_item_2])
+        expect(invoice_3.find_discount).to eq([invoice_item_3])
       end
     end
   end

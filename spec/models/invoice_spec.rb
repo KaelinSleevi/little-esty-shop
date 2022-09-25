@@ -9,6 +9,7 @@ RSpec.describe(Invoice, type: :model) do
     it { should(belong_to(:customer)) }
     it { should(have_many(:invoice_items)) }
     it { should(have_many(:items).through(:invoice_items)) }
+    it { should(have_many(:merchants).through(:items)) }
     it { should(validate_numericality_of(:customer_id)) }
   end
 
@@ -81,25 +82,41 @@ RSpec.describe(Invoice, type: :model) do
       end
     end
 
-    describe 'discounted_revenue' do
-      it 'calculates the dicounted revenue for each invoice' do
-        customer_1 = create(:random_customer)
+    describe 'discount' do
+      it 'calculates the dicounted for each invoice' do
+        5.times do
+          create(:random_customer)
+        end
 
         invoice_1 = create(:random_invoice, customer: Customer.all[0])
-        invoice_2 = create(:random_invoice, customer: Customer.all[0])
+        invoice_2 = create(:random_invoice, customer: Customer.all[1])
+        invoice_3 = create(:random_invoice, customer: Customer.all[2])
+        invoice_4 = create(:random_invoice, customer: Customer.all[3])
+        invoice_5 = create(:random_invoice, customer: Customer.all[4])
 
         merchant_1 = create(:random_merchant)
+        merchant_2 = create(:random_merchant)
 
         item_1 = create(:random_item, merchant_id: merchant_1.id)
         item_2 = create(:random_item, merchant_id: merchant_1.id)
         item_3 = create(:random_item, merchant_id: merchant_1.id)
+        item_4 = create(:random_item, merchant_id: merchant_2.id)
+        item_5 = create(:random_item, merchant_id: merchant_2.id)
 
-        invoice_item_1 = InvoiceItem.create!(item_id: item_1.id, invoice_id: invoice_1.id, quantity: 2, unit_price: 4999, status: 'shipped')
-        invoice_item_2 = InvoiceItem.create!(item_id: item_2.id, invoice_id: invoice_1.id, quantity: 1, unit_price: 2001, status: 'shipped')
-        invoice_item_3 = InvoiceItem.create!(item_id: item_3.id, invoice_id: invoice_1.id, quantity: 4, unit_price: 4575, status: 'shipped')
+        invoice_item_1 = InvoiceItem.create!(item_id: item_1.id, invoice_id: invoice_1.id, quantity: 3, unit_price: 3635, status: 'shipped')
+        invoice_item_2 = InvoiceItem.create!(item_id: item_2.id, invoice_id: invoice_2.id, quantity: 31, unit_price: 13635, status: 'packaged')
+        invoice_item_3 = InvoiceItem.create!(item_id: item_3.id, invoice_id: invoice_3.id, quantity: 13, unit_price: 1335, status: 'shipped')
+        invoice_item_4 = InvoiceItem.create!(item_id: item_4.id, invoice_id: invoice_4.id, quantity: 30, unit_price: 1335, status: 'pending')
+        invoice_item_5 = InvoiceItem.create!(item_id: item_5.id, invoice_id: invoice_5.id, quantity: 12, unit_price: 1365, status: 'packaged')
 
-        expect(invoice_1.discounted_revenue).to eq(0)
-        expect(invoice_2.discounted_revenue).to eq(0)
+        bulk_discount1 = merchant_1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)
+        bulk_discount2 = merchant_1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)
+
+        expect(invoice_1.discount.to_i).to eq(0)
+        expect(invoice_2.discount.to_i).to eq(126805)
+        expect(invoice_3.discount.to_i).to eq(3471)
+        expect(invoice_4.discount.to_i).to eq(0)
+        expect(invoice_5.discount.to_i).to eq(0)
       end
     end
   end

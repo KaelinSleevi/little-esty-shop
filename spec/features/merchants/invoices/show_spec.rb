@@ -196,5 +196,30 @@ RSpec.describe "the merchant invoices show"  do
                 end
             end
         end
+
+        describe 'When I visit my merchant invoice show page' do
+            describe 'Then I see the total revenue for my merchant from this invoice (not including discounts)' do
+                it 'And I see the total discounted revenue for my merchant from this invoice which includes bulk discounts in the calculation' do
+                    merchant1 = Merchant.create!(name: "Bob")
+                    merchant2 = Merchant.create!(name: "Mark")
+                    customer1 = Customer.create!(first_name: "Jolene", last_name: "Jones")
+                    invoice_1 = customer1.invoices.create!(status: 1, created_at: "2021-09-14 09:00:01")
+                    item1 = merchant1.items.create!(name: "item1", description: "this is item1 description", unit_price: 1)
+                    item2 = merchant1.items.create!(name: "item2", description: "this is item2 description", unit_price: 2)
+                    item3 = merchant1.items.create!(name: "item3", description: "this is item3 description", unit_price: 3)
+                    item4 = merchant2.items.create!(name: "item4", description: "this is item4 description", unit_price: 3)
+                    invoice_item1 = InvoiceItem.create!(item_id: item1.id, invoice_id: invoice_1.id, unit_price: item1.unit_price, quantity: 1, status: 0)
+                    invoice_item2 = InvoiceItem.create!(item_id: item2.id, invoice_id: invoice_1.id, unit_price: item2.unit_price, quantity: 1, status: 0)
+                    invoice_item3 = InvoiceItem.create!(item_id: item3.id, invoice_id: invoice_1.id, unit_price: item3.unit_price, quantity: 1, status: 0)    
+                    bulk_discount1 = merchant1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)
+                    bulk_discount2 = merchant1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)
+
+                    visit merchant_invoice_path(merchant1, invoice_1)
+                    require "pry"; binding.pry
+                    expect(page).to have_content("Total Revenue for Invoice #{invoice_1.id}: $0.06")
+                    expect(page).to have_content("Total Discounted Revenue for Invoice #{invoice_1.id}: $0.00")
+                end
+            end
+        end
     end
 end

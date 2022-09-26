@@ -24,6 +24,11 @@
     <li>Item Quantity: <%= invoice_item.quantity %></li>
     <li>Item Sold For: $<%= (invoice_item.unit_price.to_f)/ 100.round(2) %></li>
     <li>Item Status: <%= invoice_item.status %></li>
+    <% if invoice_item.find_discount == [] %>
+        <p><%= "No Discount" %></p>
+    <% else %>
+        <%= link_to "Discount Applied", merchant_bulk_discount_path(@merchant, invoice_item.find_discount[1].id)%>
+    <% end %>
 </ul>
 <% end %>
 

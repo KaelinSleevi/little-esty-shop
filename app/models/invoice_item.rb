@@ -18,6 +18,7 @@ class InvoiceItem < ApplicationRecord
     .where("invoice_items.quantity >= bulk_discounts.quantity_threshold")
     .select('bulk_discounts.*')
     .group("bulk_discounts.id")
+    .order("bulk_discounts.quantity_threshold desc")
   end
 end
 

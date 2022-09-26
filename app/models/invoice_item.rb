@@ -12,5 +12,12 @@ class InvoiceItem < ApplicationRecord
   validates_presence_of :unit_price
   validates_numericality_of :unit_price
   validates_presence_of :status
+
+  def find_discount
+   InvoiceItem.joins(item: [merchant: :bulk_discounts])
+    .where("invoice_items.quantity >= bulk_discounts.quantity_threshold")
+    .select('bulk_discounts.*')
+    .group("bulk_discounts.id")
+  end
 end
 

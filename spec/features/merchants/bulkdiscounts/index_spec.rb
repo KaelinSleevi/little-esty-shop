@@ -61,6 +61,25 @@ RSpec.describe 'As a merchant, when I visit the Bulk Discounts Index page' do
                     expect(page).to have_content("Discount: 15%")
                     expect(page).to have_content("Quantity Threshold: 10")
                 end
+
+                it 'And I see a notice when I do not fill out the form correctly' do
+                    merchant1 = Merchant.create!(name: "Bob")
+                    bulk_discount1 = merchant1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)
+                    bulk_discount2 = merchant1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)
+                
+                    visit merchant_bulk_discounts_path(merchant1)
+                    
+                    click_link("Create a New Discount")
+                    expect(current_path).to eq(new_merchant_bulk_discount_path(merchant1))
+
+                    fill_in("Discount:", with: " ")
+                    fill_in("Quantity Threshold:", with: "10")
+
+                    click_button "Submit"
+                    expect(current_path).to eq(new_merchant_bulk_discount_path(merchant1))
+
+                    expect(page).to have_content("All fields must be filled to submit.")
+                end
             end
         end
 

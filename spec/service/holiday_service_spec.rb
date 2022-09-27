@@ -3,7 +3,7 @@ require "./app/service/holiday_service"
 
 
 RSpec.describe(HolidayService) do
-  it("can the next three holidays") do
+  it("can return the next three holidays") do
     allow(HolidayService).to(receive(:get_holidays).and_return([{date: '10/31/2022', name: "Halloween"}, {date: '12/25/2022', name: "Thanksgiving"}, {date: '12/25/2023', name: "Christmas"}]))
     holidays = HolidayService.get_holidays
     expect(holidays).to(be_an(Array))

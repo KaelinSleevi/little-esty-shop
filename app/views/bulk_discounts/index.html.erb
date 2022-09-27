@@ -1,5 +1,12 @@
 <h1>Bulk Discounts</h1>
 
+<h4>Upcoming Holidays:<h4>
+<% @holidays.each do |holiday|%>
+    <ul>
+        <li><%= holiday.name %> on <%= holiday.date %></li>
+    </ul>
+<% end %>
+
 <% @merchant.bulk_discounts.each do |bulk_discount|%>
     <div id="discount-<%=bulk_discount.id%>">
         <ul>

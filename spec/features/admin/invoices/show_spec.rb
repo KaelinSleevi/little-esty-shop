@@ -142,9 +142,9 @@ describe 'the admin invoices show page' do
         bulk_discount2 = merchant_1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)
 
         visit admin_invoice_path(invoice_3)
-
+        save_and_open_page
         expect(page).to have_content("Total Revenue: $173.55")
-        expect(page).to have_content("Total Discounted Revenue for Invoice #{invoice_3.id}: $34.71")
+        expect(page).to have_content("Total Discounted Revenue for Invoice #{invoice_3.id}: $138.84")
       end
     end
   end

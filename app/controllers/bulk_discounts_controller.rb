@@ -18,6 +18,7 @@ class BulkDiscountsController < ApplicationController
         if @bulk_discount.save
             redirect_to merchant_bulk_discounts_path(@merchant)
           else
+            flash[:alert] = "All fields must be filled to submit."
             redirect_to new_merchant_bulk_discount_path(@merchant)
         end
     end
@@ -33,6 +34,7 @@ class BulkDiscountsController < ApplicationController
         if @bulk_discount.update(discount_params)
             redirect_to merchant_bulk_discount_path(@merchant, @bulk_discount)
         else
+            flash[:alert] = "All fields must be filled to submit."
             redirect_to edit_merchant_bulk_discount_path(@merchant, @bulk_discount)
         end
     end

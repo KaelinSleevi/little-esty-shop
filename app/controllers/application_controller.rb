@@ -1,4 +1,4 @@
-require "./app/facade/github_facade"
+require "./app/facade/holiday_facade"
 
 class ApplicationController < ActionController::Base
   before_action :holidays
@@ -6,6 +6,6 @@ class ApplicationController < ActionController::Base
   private
 
   def holidays
-    @holidays = GitHubFacade.holidays
+    @holidays = HolidayFacade.holidays
   end
 end

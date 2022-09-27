@@ -15,21 +15,25 @@
     <li>Customer: <%= @invoice.customer.first_name %> <%= @invoice.customer.last_name %></li>
 </ul>
 
+        
+
 
 <h3>Invoice Item Information<h3>
 
 <% @invoice_items.each do |invoice_item|%>
-<ul>
-    <li>Item Name: <%= invoice_item.item.name %></li>
-    <li>Item Quantity: <%= invoice_item.quantity %></li>
-    <li>Item Sold For: $<%= (invoice_item.unit_price.to_f)/ 100.round(2) %></li>
-    <li>Item Status: <%= invoice_item.status %></li>
-    <% if invoice_item.find_discount == [] %>
-        <p><%= "No Discount Applied" %></p>
-    <% else %>
-        <%= link_to "Discount Applied", merchant_bulk_discount_path(@merchant, invoice_item.find_discount[1].id)%>
-    <% end %>
-</ul>
+    <div id="invoice_item-<%=invoice_item.id%>">
+        <ul>
+            <li>Item Name: <%= invoice_item.item.name %></li>
+            <li>Item Quantity: <%= invoice_item.quantity %></li>
+            <li>Item Sold For: $<%= (invoice_item.unit_price.to_f)/ 100.round(2) %></li>
+            <li>Item Status: <%= invoice_item.status %></li>
+            <% if invoice_item.find_discount == [] %>
+                <p><%= "No Discount Applied" %></p>
+            <% else %>
+                <%= link_to "Discount Applied", merchant_bulk_discount_path(@merchant, invoice_item.find_discount[1].id)%>
+            <% end %>
+        </ul>
+    </div>
 <% end %>
 
 

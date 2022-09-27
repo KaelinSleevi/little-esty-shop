@@ -251,12 +251,12 @@ RSpec.describe "the merchant invoices show"  do
                     item_1 = create(:random_item, merchant_id: merchant_1.id)
                     item_2 = create(:random_item, merchant_id: merchant_1.id)
                     item_3 = create(:random_item, merchant_id: merchant_1.id)
-                    item_4 = create(:random_item, merchant_id: merchant_2.id)
+                    item_4 = create(:random_item, merchant_id: merchant_1.id)
                     item_5 = create(:random_item, merchant_id: merchant_2.id)
             
-                    invoice_item_1 = InvoiceItem.create!(item_id: item_1.id, invoice_id: invoice_1.id, quantity: 3, unit_price: 3635, status: 'shipped')
-                    invoice_item_2 = InvoiceItem.create!(item_id: item_2.id, invoice_id: invoice_2.id, quantity: 31, unit_price: 13635, status: 'packaged')
-                    invoice_item_3 = InvoiceItem.create!(item_id: item_3.id, invoice_id: invoice_3.id, quantity: 13, unit_price: 1335, status: 'shipped')
+                    invoice_item_1 = InvoiceItem.create!(item_id: item_1.id, invoice_id: invoice_2.id, quantity: 3, unit_price: 3635, status: 'shipped')
+                    invoice_item_2 = InvoiceItem.create!(item_id: item_2.id, invoice_id: invoice_1.id, quantity: 31, unit_price: 13635, status: 'packaged')
+                    invoice_item_3 = InvoiceItem.create!(item_id: item_3.id, invoice_id: invoice_1.id, quantity: 13, unit_price: 1335, status: 'shipped')
                     invoice_item_4 = InvoiceItem.create!(item_id: item_4.id, invoice_id: invoice_4.id, quantity: 30, unit_price: 1335, status: 'pending')
                     invoice_item_5 = InvoiceItem.create!(item_id: item_5.id, invoice_id: invoice_5.id, quantity: 12, unit_price: 1365, status: 'packaged')
             
@@ -264,9 +264,19 @@ RSpec.describe "the merchant invoices show"  do
                     bulk_discount2 = merchant_1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)
             
                     visit merchant_invoice_path(merchant_1, invoice_1)
-        
-                    expect(page).to have_link("Discount Applied")
-                    click_link "Discount Applied"
+
+                    within("#invoice_item-#{invoice_item_2.id}") do
+                        expect(page).to have_link("Discount Applied")
+                        click_link "Discount Applied"
+                    end
+                    
+                    expect(current_path).to eq(merchant_bulk_discount_path(merchant_1, bulk_discount1))
+                    visit merchant_invoice_path(merchant_1, invoice_1)
+
+                    within("#invoice_item-#{invoice_item_3.id}") do
+                        expect(page).to have_link("Discount Applied")
+                        click_link "Discount Applied"
+                    end
                     
                     expect(current_path).to eq(merchant_bulk_discount_path(merchant_1, bulk_discount1))
                 end
